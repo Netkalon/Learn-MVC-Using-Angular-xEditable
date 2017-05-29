@@ -1,0 +1,259 @@
+
+
+<div class="jumbotron text-center">
+    <h1>AngularJS XEditable</h1>
+    </div>
+ 
+        <div class="row"  ng-controller="htmlctrlController as xform">
+          
+                <div class="col-md-6">
+                    <div class="panel-heading"><h2><strong> HTML Control</strong> </h2> </div>
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                <div class="form-group m0">
+                                    <label class="col-sm-4 control-label">Email:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">
+                                            <a href="" editable-email="xform.htmlctrl.email">{{ xform.htmlctrl.email || &apos;empty&apos; }}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group m0">
+                                    <label class="col-sm-4 control-label">Tel:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">
+                                            <a href="" editable-tel="xform.htmlctrl.tel" e-pattern="\d{3}-\d{2}-\d{2}" e-title="xxx-xx-xx">{{ xform.htmlctrl.tel || &apos;empty&apos; }}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group m0">
+                                    <label class="col-sm-4 control-label">Number:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">
+                                            <a href="" editable-number="xform.htmlctrl.number" e-min="18">{{ xform.htmlctrl.number || &apos;empty&apos; }}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group m0">
+                                    <label class="col-sm-4 control-label">Color:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">
+                                            <a href="" editable-color="xform.htmlctrl.color">{{ xform.htmlctrl.color || &apos;empty&apos; }}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group m0">
+                                    <label class="col-sm-4 control-label">Date:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">
+                                            <a href="" editable-date="xform.htmlctrl.date">{{ xform.htmlctrl.date || &apos;empty&apos; }}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group m0">
+                                    <label class="col-sm-4 control-label">Text</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">
+                                            <a href="" editable-text="xform.htmlctrl.name">{{ xform.htmlctrl.name || &apos;empty&apos; }}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group m0">
+                                    <label class="col-sm-4 control-label">Local Select</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">
+                                            <a href="" editable-select="xform.htmlctrl2.status" e-ng-options="s.value as s.text for s in xform.statuses">{{ xform.showStatus() }}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group m0">
+                                    <label class="col-sm-4 control-label">Remote Select</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">
+                                            <a href="" editable-select="xform.htmlctrl3.text" ng-init="xform.loadGroups()" e-ng-options="g.text as g.text for g in xform.groups">{{ xform.htmlctrl3.text || &apos;not set&apos; }}  </a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group m0">
+                                    <label class="col-sm-4 control-label">Textarea</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">
+                                            <a href="" editable-textarea="xform.htmlctrl.desc" e-rows="3" e-cols="30">{{ xform.htmlctrl.desc || 'no description' }}    </a>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                   
+                </div>
+                <div class="col-md-6">
+                <div class="panel-heading"><h2><strong> Json Result</strong> </h2> </div>
+                <div class="panel-body">
+                    {{xform | json}}
+                </div>
+                </div>
+            </div>
+
+    <div class="row" ng-controller="tableController as xtable">
+        <h4 class="page-header"><strong>Editable row</strong> </h4>
+        <div class="row">
+           <div class="col-md-8">
+               <table class="table table-bordered table-hover bg-white">
+                   <tr style="font-weight: bold">
+                       <td style="width:35%">Name</td>
+                       <td style="width:20%">Status</td>
+                       <td style="width:20%">Group</td>
+                       <td style="width:25%">Edit</td>
+                   </tr>
+                   <tr ng-repeat="user in xtable.users">
+                       <td>
+                           <!-- editable username (text with validation)-->
+                           <span editable-text="user.name" e-name="name" e-form="rowform" onbeforesave="xtable.checkName($data, user.id)" e-required="">{{ user.name || &apos;empty&apos; }}</span>
+                       </td>
+                       <td>
+                           <!-- editable status (select-local)-->
+                           <span editable-select="user.status" e-name="status" e-form="rowform" e-ng-options="s.value as s.text for s in xtable.statuses">{{ xtable.showStatus(user) }}</span>
+                       </td>
+                       <td>
+                           <!-- editable group (select-remote)-->
+                           <span editable-select="user.group" e-name="group" onshow="xtable.loadGroups()" e-form="rowform" e-ng-options="g.id as g.text for g in xtable.groups">{{ xtable.showGroup(user) }}</span>
+                       </td>
+                       <td style="white-space: nowrap">
+                           <!-- form-->
+                           <form editable-form="" name="rowform" onbeforesave="xtable.saveUser($data, user.id)" ng-show="rowform.$visible" shown="xtable.inserted == user" class="form-buttons form-inline">
+                               <button type="submit" ng-disabled="rowform.$waiting" title="Save" class="btn btn-sm btn-info">
+                                   Save
+                               </button>
+                               <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" title="Cancel" class="btn btn-sm btn-default">
+                                   Cancel
+                               </button>
+                           </form>
+                           <div ng-show="!rowform.$visible" class="buttons">
+                               <button ng-click="rowform.$show()" title="Edit" class="btn btn-sm btn-info">
+                                   Edit
+                               </button>
+                               <button ng-click="xtable.removeUser($index)" title="Delete" class="btn btn-sm btn-danger">
+                                   Delete
+                               </button>
+                           </div>
+                       </td>
+                   </tr>
+               </table>
+               <button ng-click="xtable.addUser()" class="btn btn-default">Add row</button>
+           </div>
+            <div class="col-md-4">
+                {{xtable.users | json}}
+            </div>
+        </div>
+      
+       
+        <h4 class="page-header"><strong>Editable column </strong></h4>
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table table-bordered table-hover bg-white">
+                    <tr style="font-weight: bold; white-space: nowrap">
+                        <!-- username header-->
+                        <td style="width:40%">
+                            Name
+                            <form editable-form="" name="nameform" onaftersave="xtable.saveColumn('name')" ng-show="nameform.$visible">
+                                <button type="submit" ng-disabled="nameform.$waiting" class="btn btn-info">save</button>
+                                <button type="button" ng-disabled="nameform.$waiting" ng-click="nameform.$cancel()" class="btn btn-default">cancel</button>
+                            </form>
+                            <button ng-show="!nameform.$visible" ng-click="nameform.$show()" class="btn  btn-info">
+                               Edit
+                            </button>
+                        </td>
+                        <!-- status header-->
+                        <td style="width:30%">
+                            Status
+                            <form editable-form="" name="statusform" onaftersave="xtable.saveColumn('status')" ng-show="statusform.$visible">
+                                <button type="submit" ng-disabled="statusform.$waiting" class="btn btn-info">save</button>
+                                <button type="button" ng-disabled="statusform.$waiting" ng-click="statusform.$cancel()" class="btn btn-default">cancel</button>
+                            </form>
+                            <button ng-show="!statusform.$visible" ng-click="statusform.$show()" class="btn  btn-info">
+                                Edit
+                            </button>
+                        </td>
+                        <!-- group header-->
+                        <td style="width:30%">
+                            Group
+                            <form editable-form="" name="groupform" onaftersave="xtable.saveColumn('group')" ng-show="groupform.$visible">
+                                <button type="submit" ng-disabled="groupform.$waiting" class="btn btn-info">save</button>
+                                <button type="button" ng-disabled="groupform.$waiting" ng-click="groupform.$cancel()" class="btn btn-default">cancel</button>
+                            </form>
+                            <button ng-show="!groupform.$visible" ng-click="groupform.$show()" class="btn btn-info">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="user in xtable.users">
+                        <td>
+                         
+                            <span editable-text="user.name" e-name="name" e-form="nameform" onbeforesave="xtable.checkName($data)">{{ user.name || &apos;empty&apos; }}</span>
+                        </td>
+                        <td>
+                            <span editable-select="user.status" e-name="status" e-form="statusform" e-ng-options="s.value as s.text for s in xtable.statuses">{{ xtable.showStatus(user) }}</span>
+                        </td>
+                        <td>
+                            <span editable-select="user.group" e-name="group" onshow="xtable.loadGroups()" e-form="groupform" e-ng-options="g.id as g.text for g in xtable.groups">{{ xtable.showGroup(user) }}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                {{xtable.users | json}}
+            </div>
+        </div>
+           
+            <h4 class="page-header"><strong>Editable table </strong></h4>
+        <div class="row">
+            <div class="col-md-8">
+
+                <form editable-form="" name="tableform" onaftersave="xtable.saveTable()" oncancel="xtable.cancel()">
+                    <!-- table-->
+                    <table class="table table-bordered table-hover bg-white">
+                        <tr style="font-weight: bold">
+                            <td style="width:40%">Name</td>
+                            <td style="width:30%">Status</td>
+                            <td style="width:30%">Group</td>
+                            <td style="width:30%">
+                                <span ng-show="tableform.$visible">Action</span>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="user in xtable.users | filter:filterUser">
+                            <td>
+                                <!-- editable username (text with validation)-->
+                                <span editable-text="user.name" e-form="tableform" onbeforesave="xtable.checkName($data, user.id)">{{ user.name || &apos;empty&apos; }}</span>
+                            </td>
+                            <td>
+                                <!-- editable status (select-local)-->
+                                <span editable-select="user.status" e-form="tableform" e-ng-options="s.value as s.text for s in xtable.statuses">{{ xtable.showStatus(user) }}</span>
+                            </td>
+                            <td>
+                                <!-- editable group (select-remote)-->
+                                <span editable-select="user.group" e-form="tableform" onshow="xtable.loadGroups()" e-ng-options="g.id as g.text for g in xtable.groups">{{ xtable.showGroup(user) }}</span>
+                            </td>
+                            <td>
+                                <button type="button" ng-show="tableform.$visible" ng-click="deleteUser(user.id)" class="btn btn-danger pull-right">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- buttons-->
+                    <div class="btn-edit">
+                        <button type="button" ng-show="!tableform.$visible" ng-click="tableform.$show()" class="btn btn-default">edit</button>
+                    </div>
+                    <div ng-show="tableform.$visible" class="btn-form">
+                        <button type="button" ng-disabled="tableform.$waiting" ng-click="addUser()" class="btn btn-default pull-right">add row</button>
+                        <button type="submit" ng-disabled="tableform.$waiting" class="btn btn-info">save</button>
+                        <button type="button" ng-disabled="tableform.$waiting" ng-click="tableform.$cancel()" class="btn btn-default">cancel</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                {{xtable.users | json}}
+            </div>
+        </div>
+        </div>

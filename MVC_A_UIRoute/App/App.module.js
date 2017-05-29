@@ -1,0 +1,1 @@
+﻿var XEdit = angular.module('XEdit', ['ui.router','xeditable']);

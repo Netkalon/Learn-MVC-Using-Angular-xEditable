@@ -50,17 +50,14 @@ function tableController($filter, $http, editableOptions, editableThemes, $q) {
     };
 
     vm.saveUser = function (data, id) {
-        //vm.user not updated yet
         angular.extend(data, { id: id });
       
     };
 
-    // remove user
     vm.removeUser = function (index) {
         vm.users.splice(index, 1);
     };
 
-    // add user
     vm.addUser = function () {
         vm.inserted = {
             id: vm.users.length + 1,
@@ -72,10 +69,7 @@ function tableController($filter, $http, editableOptions, editableThemes, $q) {
         vm.users.push(vm.inserted);
     };
 
-    // editable column
-    // ----------------------------------- 
-
-
+    
     vm.saveColumn = function (column) {
         var results = [];
         angular.forEach(vm.users, function (user) {
@@ -84,15 +78,11 @@ function tableController($filter, $http, editableOptions, editableThemes, $q) {
         return $q.all(results);
     };
 
-    // editable table
-    // ----------------------------------- 
+   
 
-    // filter users to show
     vm.filterUser = function (user) {
         return user.isDeleted !== true;
     };
-
-    // mark user as deleted
     vm.deleteUser = function (id) {
         var filtered = $filter('filter')(vm.users, { id: id });
         if (filtered.length) {
@@ -100,27 +90,22 @@ function tableController($filter, $http, editableOptions, editableThemes, $q) {
         }
     };
 
-    // cancel all changes
     vm.cancel = function () {
         for (var i = vm.users.length; i--;) {
             var user = vm.users[i];
-            // undelete
             if (user.isDeleted) {
                 delete user.isDeleted;
             }
-            // remove new 
             if (user.isNew) {
                 vm.users.splice(i, 1);
             }
         }
     };
 
-    // save edits
     vm.saveTable = function () {
         var results = [];
         for (var i = vm.users.length; i--;) {
             var user = vm.users[i];
-            // actually delete user
             if (user.isDeleted) {
                 vm.users.splice(i, 1);
             }
@@ -129,8 +114,6 @@ function tableController($filter, $http, editableOptions, editableThemes, $q) {
                 user.isNew = false;
             }
 
-            // send on server
-            // results.push($http.post('/saveUser', user));
             alert('Saving Table...');
         }
 
